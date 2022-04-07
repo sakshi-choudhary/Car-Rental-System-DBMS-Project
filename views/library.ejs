@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('head.ejs') %>
+
+  <body class="container shadow">
+    <noscript> Please turn on JavaScript or change browsers!</noscript>
+
+    <%- include('header.ejs') %>
+
+    <main class="container pb-5" role="main">
+      <div class="container" role="tablist">
+        <h6 class="classified">
+          <% switch (res) { case "add": %> Your reservation was
+          <strong> added </strong> successfully. <% break; case "edit": %> Your
+          reservation was <strong> edited </strong> successfully. <% break; case
+          "del":%> Your reservation was <strong> removed </strong> successfully.
+          <% } %>
+        </h6>
+      </div>
+
+      <div class="container active show p5">
+        <% if (carsArr) { %>
+        <div class="row cars_container card-deck-wrapper card-deck">
+          <% carsArr.forEach( (car) => { %>
+          <div class="col my-2 card text-center">
+            <img
+              class="card-img-top img-fluid mx-auto d-block"
+              loading="lazy"
+              src="/<%= car.photo %>"
+              alt="<%= car.model %> image"
+            />
+
+            <p class="card-text">
+              <strong>
+                <i> <%= car.model %> </i>
+              </strong>
+              <br />
+              <a href="/catalog/<%= car.brand %>">
+                <%= car.brand %>
+              </a>
+              -
+              <i><%= car.fullPrice %>&#8377;</i>
+              <br /><br />
+              <i class="col">
+                <%= new Date(car.dateIn).toDateString() %>
+              </i>
+              <br />
+              <i class="col">
+                <%= new Date(car.dateOut).toDateString() %>
+              </i>
+            </p>
+            <a href="/vehicle/<%= car.idCar %>" class="btn btn-outline-primary">
+              Edit
+            </a>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+      <% } else { %>
+      <h4 class="text-center" style="margin: 255px 0 255px;">
+        Your reservation list is <strong> empty </strong> - head to
+        <a href="/catalog"> catalog.</a>
+      </h4>
+      <% } %>
+    </main>
+
+    <%- include('footer.ejs') %>
+  </body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('head.ejs') %>
+
+  <body class="container shadow">
+    <noscript> Please turn on JavaScript or change browsers!</noscript>
+
+    <%- include('header.ejs') %>
+
+    <main class="container" role="main">
+      <div class="row car_container">
+        <div class="col">
+          <img
+            id="imgZoom"
+            class="img-fluid pb-5"
+            loading="lazy"
+            src="/<%= car.photo %>"
+            alt="<%= car.model %> image"
+          />
+          <div id="preview"></div>
+          <input id="hidden" type="hidden" value="/<%= car.photo %>" />
+
+          <%if (user) { %> <%if (!resv) { %>
+          <form
+            class="py-3 row"
+            action="/vehicle/add/<%= car.idCar %>"
+            method="post"
+          >
+            <div class="form-group">
+              <label
+                >Date in:
+                <input
+                  id="dateIn"
+                  class="mx-auto col date form-control"
+                  type="date"
+                  name="dateIn"
+                  required
+                />
+              </label>
+
+              <label
+                >Date out:
+                <input
+                  id="dateOut"
+                  class="mx-auto col date form-control"
+                  type="date"
+                  name="dateOut"
+                  readonly
+                  required
+                />
+              </label>
+            </div>
+
+            <div class="form-group form-inline">
+              <span id="spMin" class="font-weight-bold text-primary mr-3"
+                >20h</span
+              >
+              <input
+                id="days"
+                class="col custom-range"
+                type="range"
+                name="days"
+                min="1"
+                max="6"
+                value="1"
+              />
+              <em class="col text-center">Total (&#8377;):</em>
+              <input id="price" type="hidden" value="<%= car.price %>" />
+              <input
+                id="numbers"
+                class="form-control"
+                size="3"
+                name="numbers"
+                value="<%= car.price %>"
+                readonly
+              />
+            </div>
+            <input
+              type="submit"
+              class="mx-1 mt-3 btn btn-outline-primary form-control"
+              value="Reserve"
+            />
+          </form>
+
+          <% } else { %>
+          <div class="price text-center">
+            From:
+            <em>
+              <u><%= new Date(resv.dateIn).toDateString() %></u>
+            </em>
+            <br />
+            To:
+            <em>
+              <u><%= new Date(resv.dateOut).toDateString()%></u>
+            </em>
+
+            <form
+              class="my-2 row"
+              action="/vehicle/edit/<%= resv.idReservation%>"
+              method="post"
+            >
+              <div class="form-group">
+                <label
+                  >Date in:
+                  <input
+                    id="dateIn"
+                    class="mx-auto col date form-control"
+                    type="date"
+                    name="dateIn"
+                    required
+                  />
+                </label>
+                <label
+                  >Date out:
+                  <input
+                    id="dateOut"
+                    class="mx-auto col date form-control"
+                    type="date"
+                    name="dateOut"
+                    readonly
+                    required
+                  />
+                </label>
+              </div>
+
+              <div class="form-group form-inline">
+                <span id="spMin" class="font-weight-bold text-primary mr-3"
+                  >20h</span
+                >
+                <input
+                  id="days"
+                  class="col custom-range"
+                  type="range"
+                  name="days"
+                  min="1"
+                  max="6"
+                  value="1"
+                />
+                <em class="col text-center">Total (&#8377;):</em>
+                <input id="price" type="hidden" value="<%= car.price %>" />
+                <input
+                  id="numbers"
+                  class="form-control"
+                  size="3"
+                  name="numbers"
+                  value="<%= car.price %>"
+                  readonly
+                />
+              </div>
+              <input
+                type="submit"
+                class="mx-1 btn btn-outline-success btn-block form-control"
+                value="Edit"
+              />
+            </form>
+
+            <form
+              class="row"
+              action="/vehicle/rem/<%= resv.idReservation%>"
+              method="post"
+            >
+              <input
+                type="submit"
+                value="Remove"
+                class="mx-1 btn btn-outline-danger btn-block form-control"
+              />
+            </form>
+          </div>
+          <% } %> <% } %>
+        </div>
+
+        <div id="car_info" class="col-md-8 text-left card">
+          <div class="model">
+            <strong> <i> <%= car.brand %> <%= car.model %> </i> </strong>
+          </div>
+
+          <div class="brand">
+            <br />Brand:
+            <a href="/data/<%= car.brand %>">
+              <%= car.brand %>
+            </a>
+          </div>
+
+          <div class="price">
+            Price: <%= car.price %>
+            <em>&#8377;</em>
+          </div>
+
+          <div class="type">
+            Category:
+            <a href="/data/<%= car.type %>">
+              <%= car.type %>
+            </a>
+          </div>
+
+          <div class="year">
+            Production:
+            <a href="/data/<%= car.year %>">
+              <%= car.year %>
+            </a>
+          </div>
+
+          <hr />
+
+          <div class="details text-justify">
+            <%= car.details %>
+          </div>
+        </div>
+      </div>
+
+      <br />
+
+      <%if (carsArr) { %>
+      <em>
+        <strong>Trending vehicles:</strong>
+      </em>
+
+      <ul class="list-unstyled pagination pt-3">
+        <% carsArr.forEach( (cr) => { %>
+        <li class="mx-1 page-item">
+          <a href="/vehicle/<%= cr.idCar%>">
+            <img
+              class="img-fluid img-thumbnail"
+              loading="lazy"
+              src="/<%= cr.photo %>"
+              alt="<%= cr.model %> image"
+            />
+          </a>
+        </li>
+        <% }) %>
+      </ul>
+      <% }%>
+    </main>
+
+    <%- include('footer.ejs') %>
+  </body>
+</html>

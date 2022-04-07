@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('head.ejs') %>
+
+  <link rel="stylesheet" href="/css/profile.css" />
+
+  <body class="container shadow">
+    <noscript> Please turn on JavaScript or change browsers!</noscript>
+
+    <%- include('header.ejs') %>
+
+    <main class="container" role="main">
+      <div class="row car_header">
+        <div class="col text-left">
+          <h3>RentAcar!</h3>
+        </div>
+
+        <div class="col text-right">
+          <h3>User data</h3>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col col-span-6 text-center">
+          <i class="fa fa-lg fa-user"></i>
+
+          <div class="col py-3">
+            <strong>Username:</strong> <%= user.fullName %>
+            <br />
+            <strong>email:</strong> <%= user.email %>
+          </div>
+
+          <a href="/catalog" class="mb-3 btn btn-lg btn-outline-secondary">
+            Catalog
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <%- include('footer.ejs') %>
+  </body>
+</html>

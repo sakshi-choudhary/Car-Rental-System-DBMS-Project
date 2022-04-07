@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('head.ejs') %>
+
+  <body class="container shadow">
+    <noscript> Please turn on JavaScript or change browsers!</noscript>
+
+    <%- include('header.ejs') %>
+
+    <main class="container" role="main">
+      <% if (brand) { %>
+      <div class="row">
+        <div class="col-xs-1 text-center" style="position: relative; left: 0;">
+          <% if (type) { %> Search by brand: <br />
+          <br />
+          <ul class="list-group list-group-flush">
+            <% type.forEach( (tp) => { %>
+            <li class="list-group-item list-group-item-action">
+              <a href="/catalog/<%= tp.name%>">
+                <%= tp.name %>
+              </a>
+            </li>
+            <% }) %>
+          </ul>
+          <% } %>
+        </div>
+
+        <div class="col container" style="overflow: hidden;">
+          <h2 class="media"><em><%= brand.name %></em>:</h2>
+          <h6 class="media"><%= brand.details %></h6>
+
+          <hr class="media" />
+
+          <% if (carsArr.length) { %>
+          <div class="row cars_container card-deck-wrapper card-deck">
+            <% carsArr.forEach( (car) => { %>
+            <div class="col my-2 card text-center">
+              <img
+                class="img-fluid"
+                loading="lazy"
+                src="/<%= car.photo %>"
+                alt="<%= car.model %> image"
+              />
+
+              <p class="card-text text-center">
+                <strong><em><%= car.model %></em></strong>
+                <br />
+                <a href="/catalog/<%= car.brand %>">
+                  <%= car.brand %>
+                </a>
+                - <%= car.year %>
+                <br />
+                <em><%= car.price %> &#8377;</em>
+              </p>
+              <a
+                href="/vehicle/<%= car.idCar %>"
+                class="btn btn-outline-primary"
+              >
+                More
+              </a>
+            </div>
+            <% }) %>
+          </div>
+
+          <% } else { %>
+          <h4>This list is <strong>empty</strong>.</h4>
+          <% } %>
+        </div>
+      </div>
+      <% } %>
+    </main>
+
+    <%- include('footer.ejs') %>
+  </body>
+</html>

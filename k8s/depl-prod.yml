@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rentacar-deployment
+  labels:
+    app: rentacar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rentacar
+  template:
+    metadata:
+      labels:
+        app: rentacar
+    spec:
+      containers:
+        - name: rentacar
+          image: rentacar:v1
+          ports:
+            - containerPort: 9000
+        - name: db
+          image: mysql:5.7
+          volumeMounts:
+            - name: sql-volume
+              mountPath: /docker-entrypoint-initdb.d/db.sql
+          env:
+            - MYSQL_RANDOM_ROOT_PASSWORD=yes
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USER}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+      volumes:
+        - name: sql-volume
+          hostPath:
+            # directory location on host
+            path: ../db/db.sql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rentacar-service
+spec:
+  selector:
+    app: rentacar
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 30000

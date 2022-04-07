@@ -1,0 +1,211 @@
+html {
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  font-family: "Lucida Grande";
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s;
+  height: 100%;
+}
+
+main {
+  overflow: auto;
+  position: relative;
+}
+
+main::after {
+  content: "";
+  z-index: -1;
+  opacity: 0.1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  background: url("/images/logo.jpg") no-repeat center center;
+}
+
+@-webkit-keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+nav .navbar-brand {
+  font-family: sans-serif;
+  font-size: 22px;
+  color: black;
+}
+
+img {
+  display: block;
+  border: 0;
+}
+img:hover {
+  opacity: 0.9;
+  border: 0;
+}
+
+.nav-link {
+  font-size: 16px;
+  color: black;
+}
+
+a:hover {
+  text-decoration: none !important;
+}
+
+nav input[type="text"],
+input::-webkit-input-placeholder {
+  font-size: 12px;
+}
+
+.jumbotron {
+  background-image: url("/images/jumbo1.jpg");
+  background-size: cover;
+  color: white;
+  position: relative;
+  -webkit-text-stroke: 0.3px green;
+}
+
+.jumbotron::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#title {
+  font-family: "FARRO", "Constantia", "Comic Sans MS", "Franklin Gothic";
+}
+
+.car_container {
+  font: 18px "David Libre", serif;
+}
+
+@media only screen and (max-width: 900px) {
+  h2.media,
+  h6.media,
+  hr.media,
+  div.media {
+    display: none;
+  }
+}
+
+.car_container .model {
+  font-size: 40px;
+  width: 100%;
+}
+
+.car_container .brand {
+  font-size: 22px;
+  width: 100%;
+  margin: 1% 0 6% 0;
+}
+
+.car_container .price,
+.car_container .type,
+.car_container .year,
+.car_container .rating {
+  font-size: 18px;
+  width: 100%;
+  margin: 1% 2% 0% 0;
+}
+
+.car_container .details {
+  margin: 10% 0 5% 0;
+  font-size: 21px;
+}
+
+#car_info {
+  background-color: white;
+  padding: 3%;
+}
+
+.cars_container img {
+  width: 30rem;
+  height: 20rem;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+.cars_container .card {
+  min-width: 200px;
+  max-width: 250px;
+  margin-bottom: 2%;
+}
+
+/*---LOGIN------*/
+
+.login-form {
+  width: 340px;
+  margin: 50px auto;
+}
+
+.login-form form {
+  margin-bottom: 15px;
+  background: #f7f7f7;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+}
+
+.login-form h2 {
+  margin: 0 0 15px;
+}
+
+.form-control,
+.btn {
+  min-height: 38px;
+  border-radius: 2px;
+}
+
+.btn {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.spinner {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: #ffffff url("/images/Preloader.gif") no-repeat center center;
+}
+
+#preview {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 350px;
+  width: 350px;
+  border: 1px dotted black;
+  margin: 0 auto;
+  background-repeat: no-repeat;
+}

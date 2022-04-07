@@ -1,0 +1,14 @@
+@import url(https://fonts.googleapis.com/css?family=Crimson+Text:400,700,900,400italic,700italic,900italic|Playfair+Display:400,700,900,400italic,700italic,900italic|Rock+Salt:400);
+
+main {
+  border: 5px solid;
+  border-radius: 5px;
+}
+
+.car_header * {
+  font: 700 1em/1.25 'Playfair Display', sans-serif;
+  letter-spacing: 0.125em;
+  margin: 0;
+  text-transform: uppercase;
+  padding: 0.5rem 0.5rem 1rem;
+}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('head.ejs') %>
+
+  <body class="container shadow">
+    <noscript> Please turn on JavaScript or change browsers!</noscript>
+
+    <%- include('header.ejs') %>
+
+    <main class="container" role="main">
+      <div class="jumbotron row">
+        <div class="col">
+          <h1 id="title">
+            RentAcar!
+          </h1>
+
+          <h4 id="title">
+            Driving by your side.
+          </h4>
+
+          <!--search-->
+          <form
+            class="align-middle"
+            action="/find"
+            method="post"
+            style="-webkit-text-stroke-color: blue;"
+          >
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="search"
+                name="item"
+                placeholder="Brand, model, year"
+                required
+                autofocus
+              />
+
+              <div class="input-group-addon">
+                <button class="btn btn-outline-primary" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <%if (!user) { %>
+        <div class="col-md text-center">
+          <form action="/register" method="post">
+            <div class="form-group">
+              <h6>
+                Join us now and gain a 30 days trial.
+              </h6>
+              <input
+                class="form-control"
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                minlength="6"
+                maxlength="20"
+                autocomplete="off"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="email"
+                name="email"
+                placeholder="your@email.com"
+                minlength="4"
+                maxlength="25"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="password"
+                name="password"
+                placeholder="password"
+                minlength="4"
+                maxlength="20"
+                autocomplete="new-password"
+                required
+              />
+
+              <label>
+                By signing up you agree to our
+                <a href="/terms-of-use" target="_blank"> Terms of use </a>,
+                <a href="/terms-of-use" target="_blank"> Privacy Policy </a>,
+                and <a href="/terms-of-use" target="_blank"> Cookie Use </a>.
+                You also agree that you’re over 18 years of age.
+              </label>
+
+              <input
+                type="submit"
+                class="btn btn-outline-success btn-block"
+                value="Sign up"
+              />
+            </div>
+          </form>
+        </div>
+        <% } %>
+      </div>
+
+      <hr />
+
+      <div class="container">
+        <h3>
+          Trending:
+        </h3>
+        <%if (carsArr) { %>
+        <div class="row cars_container card-deck-wrapper card-deck">
+          <% carsArr.forEach( (car) => { %>
+          <div class="col my-2 card text-center">
+            <img
+              class="img-fluid"
+              loading="lazy"
+              src="/<%= car.photo %>"
+              alt="<%= car.model %> image"
+            />
+
+            <p class="card-text">
+              <strong>
+                <em><%= car.model %></em>
+              </strong>
+              <br />
+              <a href="/data/<%= car.brand %>">
+                <%= car.brand %>
+              </a>
+              - <%= car.year %>
+              <br />
+              <em><%= car.price %> &#8377;</em>
+            </p>
+            <a
+              href="/vehicle/<%= car.idCar %>"
+              class="btn btn-outline-primary btn-block mt-auto"
+            >
+              More
+            </a>
+          </div>
+          <% }) %>
+        </div>
+        <% } %>
+      </div>
+    </main>
+
+    <%- include('footer.ejs') %> <%- include('spinner.ejs') %>
+  </body>
+</html>

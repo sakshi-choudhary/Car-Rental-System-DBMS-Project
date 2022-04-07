@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('head.ejs') %>
+
+  <body class="container shadow">
+    <noscript> Please turn on JavaScript or change browsers!</noscript>
+
+    <%- include('header.ejs') %>
+    
+    <main class="container" role="main">
+      <% switch (res) { case "editCar": %>
+      <h6 class="classified">
+        The vehicle was <strong> edited </strong> successfully.
+      </h6>
+      <% break; case "editRes": %>
+      <h6 class="classified">
+        The reservation was <strong> edited </strong> successfully.
+      </h6>
+      <% break; case "rem":%>
+      <h6 class="classified">
+        The reservation was <strong> removed </strong> successfully.
+      </h6>
+      <% break; case "editUse":%>
+      <h6 class="classified">
+        The user was <strong> edited </strong> successfully.
+      </h6>
+      <% break; } if (!car && !resv && !userData) { %>
+      <ul
+        class="nav nav-tabs list-inline mx-auto justify-content-center"
+        role="tablist"
+      >
+        <li id="cars" class="nav-link list-inline-item active">Vehicles</li>
+        <li id="resvs" class="nav-link list-inline-item">Reservations</li>
+        <li id="users" class="nav-link list-inline-item">Users</li>
+      </ul>
+      <% } %>
+
+      <div id="cars1" class="hide container">
+        <%if (carsArr) { %>
+        <div class="row cars_container card-deck-wrapper card-deck">
+          <% carsArr.forEach( (car) => { %>
+          <div class="col my-2 card text-center">
+            <img
+              class="img-fluid"
+              loading="lazy"
+              src="/<%= car.photo %>"
+              alt="<%= car.model %> image"
+            />
+
+            <p class="card-text">
+              <strong>
+                <em><%= car.model %></em>
+              </strong>
+              <br />
+              <a href="/catalog/<%= car.brand %>">
+                <%= car.brand %>
+              </a>
+              - <%=car.year%>
+            </p>
+            <a
+              href="/admin/car/<%= car.idCar %>"
+              class="btn btn-outline-success btn-block mt-auto"
+            >
+              More
+            </a>
+          </div>
+          <% }) %>
+        </div>
+        <% } %>
+      </div>
+
+      <div id="resvs1" class="hide container">
+        <% if (resArr) { if (resArr.length) { %>
+        <div class="row cars_container card-deck-wrapper card-deck">
+          <% resArr.forEach( (res) => { %>
+          <div class="col my-2 card text-center">
+            <img
+              class="card-img-top img-fluid mx-auto d-block"
+              loading="lazy"
+              src="/<%= res.photo %>"
+              alt="<%= res.model %> image"
+            />
+            <p class="card-text">
+              <a href="/vehicle/<%= res.idCar %> %>">
+                <%= res.model %>
+              </a>
+              -
+              <strong>
+                <em><%= res.fullPrice %> &#8377;</em>
+              </strong>
+
+              <br />
+              <em class="w-0 p-0">
+                <%= new Date(res.dateIn).toDateString() %>
+              </em>
+
+              <br />
+              <em class="w-0 p-0">
+                <%= new Date(res.dateOut).toDateString() %>
+              </em>
+            </p>
+
+            <a
+              href="/admin/resv/<%= res.idReservation %>"
+              class="btn btn-outline-primary btn-block mt-auto"
+            >
+              More
+            </a>
+          </div>
+          <% })%>
+        </div>
+
+        <% } else { %>
+        <h4 class="my-3">There are no <strong>reservations</strong>.</h4>
+        <% } }%>
+      </div>
+
+      <div id="users1" class="hide container">
+        <% if (userArr) { %>
+        <div class="row cars_container card-deck-wrapper card-deck">
+          <% userArr.forEach( (use) => { %>
+          <div class="col my-2 card text-center">
+            <p class="card-text">
+              <strong> <em> <%= use.fullName %> </em> </strong>
+              <br />
+              <a><%= use.idUser %></a>
+              <br />
+            </p>
+
+            <a
+              href="/admin/user/<%= use.idUser %>"
+              class="btn btn-outline-danger btn-block mt-auto"
+            >
+              More
+            </a>
+          </div>
+          <% })%>
+        </div>
+        <% } %>
+      </div>
+
+      <div class="container row cars_container mx-auto">
+        <% if (car) { %>
+        <div class="col">
+          <img
+            class="img-fluid mx-auto d-block"
+            loading="lazy"
+            src="/<%= car.photo %>"
+            alt="<%= car.model %> image"
+          />
+
+          <hr />
+
+          <p class="py-3 synopsis text-justify">
+            <%= car.details %>
+          </p>
+        </div>
+
+        <div id="car_info" class="text-center card">
+          <form action="/admin/editCar/<%= car.idCar%>" method="post">
+            <div class="form-group">
+              <label>
+                <%= car.brand %>:
+                <input
+                  type="text"
+                  class="col form-control"
+                  maxlength="20"
+                  name="model"
+                  value="<%= car.model%>"
+                  required
+                />
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                Brand:
+                <select
+                  class="selectpicker form-control custom-select"
+                  data-style="btn-info"
+                  name="brand"
+                  required
+                >
+                  <% slctArr.forEach(function(slct){ %>
+                  <option value="<%= slct.name %>"><%= slct.name %></option>
+                  <% }) %>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                Category:
+                <select
+                  class="selectpicker form-control custom-select"
+                  data-style="btn-info"
+                  name="type"
+                  required
+                >
+                  <% slct1Arr.forEach(function(slct1){ %>
+                  <option value="<%= slct1.type %>"><%= slct1.type %></option>
+                  <% }) %>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col">
+                Production:
+                <input
+                  type="number"
+                  class="mx-auto col-md-5 form-control"
+                  name="year"
+                  value="<%= car.year %>"
+                  required
+                />
+              </label>
+            </div>
+
+            <div class="row form-group">
+              <label class="col"
+                >Active:
+                <select class="form-control custom-select" name="active">
+                  <option value="1" selected>Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </label>
+
+              <label class="col"
+                >Total(<em>&#8377;</em>):<br />
+                <input
+                  type="number"
+                  id="numbers"
+                  class="form-control"
+                  min="100"
+                  max="5000"
+                  name="numbers"
+                  value="<%= car.price %>"
+                />
+              </label>
+            </div>
+
+            <hr />
+
+            <input
+              type="submit"
+              class="btn btn-outline-success btn-block btn-sm col-md-12"
+              value="Change"
+            />
+          </form>
+        </div>
+        <% } %>
+      </div>
+
+      <div class="container row cars_container mx-auto">
+        <%if (resv) { %>
+        <div class="col">
+          <img
+            class="img-fluid mx-auto d-block"
+            loading="lazy"
+            src="/<%= resv.photo %>"
+            alt="<%= resv.model %> image"
+          />
+        </div>
+
+        <div id="car_info" class="text-center card">
+          <div class="title">
+            <strong>
+              <em> <%= resv.brand %> <%= resv.model %> </em>
+            </strong>
+          </div>
+
+          <div class="category">
+            User:
+            <a href="/admin/user/<%= resv.idUser %>">
+              <%= resv.fullName %>
+            </a>
+          </div>
+
+          <div class="category">
+            Category:
+            <a href="/data/<%= resv.type %>">
+              <%= resv.type %>
+            </a>
+          </div>
+
+          <div class="price">
+            Price:
+            <em>
+              <%= resv.fullPrice %> &#8377;
+            </em>
+          </div>
+
+          <div class="py-3 price">
+            From: <em><%= new Date(resv.dateIn).toDateString() %></em>
+            <br />
+            To: <em><%= new Date(resv.dateOut).toDateString() %></em>
+          </div>
+
+          <hr class="pb-2" />
+
+          <form action="/admin/editRes/<%= resv.idReservation%>" method="post">
+            <div class="form-group">
+              <label>
+                Date in:
+                <input
+                  id="dateIn"
+                  class="date form-control"
+                  type="date"
+                  name="dateIn"
+                  required
+                />
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                Date out:
+                <input
+                  id="dateOut"
+                  class="date form-control"
+                  type="date"
+                  name="dateOut"
+                  readonly
+                  required
+                />
+              </label>
+            </div>
+
+            <div class="row form-group">
+              <label class="col">
+                Active:
+                <select class="col-7 form-control custom-select" name="active">
+                  <option value="1" selected>Yes</option>
+                  <option value="0">No</option>
+                </select>
+              </label>
+
+              <label>
+                Total(<em>&#8377;</em>):<br />
+                <input id="price" type="hidden" value="<%= resv.price %>" />
+                <input
+                  type="number"
+                  id="numbers"
+                  class="mx-auto col-9 form-control"
+                  min="100"
+                  max="500000"
+                  name="numbers"
+                  value="<%= resv.price %>"
+                  readonly
+                />
+              </label>
+            </div>
+
+            <div class="form-group row">
+              <span id="spMin" class="font-weight-bold text-primary mr-3">
+                20h
+              </span>
+              <input
+                id="days"
+                class="col custom-range"
+                type="range"
+                name="days"
+                min="1"
+                max="6"
+                value="1"
+              />
+            </div>
+
+            <input
+              type="submit"
+              class="col btn btn-outline-primary btn-sm"
+              value="Edit"
+            />
+          </form>
+
+          <form
+            class="py-2"
+            action="/admin/rem/<%= resv.idReservation%>"
+            method="post"
+          >
+            <input
+              type="submit"
+              class="col btn btn-outline-danger btn-sm"
+              value="Remove"
+            />
+          </form>
+        </div>
+        <% } %>
+      </div>
+
+      <%if (userData) { %>
+      <div class="text-center">
+        <em class="fa fa-user fa-4x"></em>
+      </div>
+
+      <form
+        id="car_info"
+        class="col-5 mx-auto card"
+        action="/admin/editUse/<%= userData.idUser%>"
+        method="post"
+      >
+        <div class="form-group">
+          <label>Full Name:</label>
+          <input
+            type="text"
+            size="14"
+            maxlength="20"
+            class="form-control"
+            value="<%= userData.fullName %>"
+            name="name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>E-mail:</label>
+          <input
+            type="email"
+            class="form-control"
+            value="<%= userData.email %>"
+            name="email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>
+            Active:
+            <select class="form-control" name="active">
+              <option value="1" selected>Yes</option>
+              <option value="0">No</option>
+            </select>
+          </label>
+
+          <label>
+            Admin:
+            <select class="form-control" name="admin">
+              <option value="0" selected>No</option>
+              <option value="1">Yes</option>
+            </select>
+          </label>
+        </div>
+
+        <input
+          type="submit"
+          class="btn btn-outline-danger btn-block btn-sm"
+          value="Edit"
+        />
+      </form>
+      <% } %>
+    </main>
+
+    <%- include('footer.ejs') %>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('head.ejs') %>
+
+  <body class="container shadow">
+    <noscript> Please turn on JavaScript or change browsers!</noscript>
+
+    <%- include('header.ejs') %>
+
+    <main class="container" role="main">
+      <div class="row">
+        <div class="col-xs-1 text-center" style="position: relative; left: 0;">
+          <% if (typeArr) { %> Search by type: <br />
+          <br />
+          <ul class="list-group list-group-flush">
+            <% typeArr.forEach( (tp) => { %>
+            <li class="list-group-item list-group-item-action">
+              <a href="/data/<%= tp.type%>">
+                <%= tp.type %>
+              </a>
+            </li>
+            <% }) %>
+          </ul>
+          <% } %>
+        </div>
+
+        <div class="col container" style="overflow: hidden;">
+          <h2>Vehicles from <em><%= data %></em>:</h2>
+
+          <% if (carsArr) { %>
+          <div class="row cars_container card-deck-wrapper card-deck">
+            <% carsArr.forEach( (car) => { %>
+            <div class="col my-2 card text-center">
+              <img
+                class="img-fluid"
+                loading="lazy"
+                src="/<%= car.photo %>"
+                alt="<%= car.model %> image"
+              />
+
+              <p class="card-text text-center">
+                <strong><em><%= car.model %></em></strong>
+                <br />
+                <a href="/data/<%= car.brand %>">
+                  <%= car.brand %>
+                </a>
+                - <%= car.year %>
+                <br />
+                <em><%= car.price %> &#8377;</em>
+              </p>
+              <a
+                href="/vehicle/<%= car.idCar %>"
+                class="btn btn-outline-primary"
+              >
+                More
+              </a>
+            </div>
+            <% }) %>
+          </div>
+
+          <% } else { %>
+          <h4>
+            This list is <strong>empty</strong> - head back to
+            <a href="/catalog"> catalog.</a>
+          </h4>
+          <% } %>
+        </div>
+      </div>
+      <br />
+      <div class="media row">
+        <% if (randArr) { %>
+        <em class="my-2 text-center font-weight-bolder">Trending vehicles:</em>
+        <ul class="list-unstyled pagination">
+          <% randArr.forEach( (rd) => { %>
+          <li class="mx-2 page-item">
+            <a href="/vehicle/<%= rd.idCar %>">
+              <img
+                class="img-fluid img-thumbnail"
+                loading="lazy"
+                src="/<%= rd.photo %>"
+                alt="<%= rd.model %> image"
+              />
+            </a>
+          </li>
+          <% }) %>
+        </ul>
+        <% } %>
+      </div>
+    </main>
+    <br />
+
+    <%- include('footer.ejs') %>
+  </body>
+</html>
